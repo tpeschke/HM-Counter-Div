@@ -1,0 +1,70 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+p {
+  display: inline-block;
+}
+
+.fighter {
+  border: 1px solid black;
+  min-width: 5vw;
+}
+
+.input {
+  padding: 0 25px;
+  min-width: 4vw;
+  max-height: 5rem;
+}
+
+.Counter {
+  background: lightcoral;
+  margin: 5vh auto;
+  width: 650px;
+  border: 1px solid black;
+}
+
+.BenchTable {
+  background: lightgoldenrodyellow;
+  margin: 5vh auto;
+  width: 650px;
+  border: 1px solid black;
+}
+
+.Graveyard {
+  background: grey;
+  margin: 5vh auto;
+  width: 650px;
+  border: 1px solid black;
+}
+
+.Waiting {
+  margin: 5vh auto;
+  width: 650px;
+  border: 1px solid black;
+  background: lightblue;
+}
