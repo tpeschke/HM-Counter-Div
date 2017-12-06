@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import './App.css'
+import Modal from 'react-responsive-modal'
 
 import WaitingTable from './WaitingTable'
 import Counter from './Counter'
@@ -12,13 +13,15 @@ class App extends Component {
     
     this.state = {
       fightersWaiting: 
-                [{"name": "test1","speed": 5, "action": 17},
-                {"name": "test2","speed":  7, "action": 10}],
+                [{"name": "test1","speed": 5, "action": 17, top: false},
+                {"name": "test2","speed":  7, "action": 10, top: false}],
       fightersBench: 
-                [{"name": "test3","speed": 15, "action": 25},
-                {"name": "test4","speed": 10, "action": 34}],
-      count: 0,
-      Graveyard: []
+                [{"name": "test3","speed": 15, "action": 25, top: false},
+                {"name": "test4","speed": 10, "action": 34, top: false}],
+      count: 1,
+      Graveyard: [],
+      open: false,
+      top: 0,
     }
 
     this.sortFigh = this.sortFigh.bind(this) 
@@ -30,19 +33,22 @@ class App extends Component {
     this.killBench = this.killBench.bind(this)
     this.resurrect = this.resurrect.bind(this)
     this.moreSpeedWaiting = this.moreSpeedWaiting.bind(this)
+    this.moreSpeedBench = this.moreSpeedBench.bind(this)
+    this.catchUpCount = this.catchUpCount.bind(this)
+    this.topBench = this.topBench.bind(this)
+    this.topWaiting = this.topWaiting.bind(this)
   }
 
 
   //=======COUNT STUFF==========
 
   componentDidMount(){
-    this.sortFigh()
     this.bench()
-  }
-
+  } 
+  
   sortFigh() {
     let sortedFigh = this.state.fightersWaiting.sort((a,b) => a.action - b.action);
-    this.setState({ fighters: sortedFigh })
+    this.setState({ fightersWaiting: sortedFigh })
   }
 
   increaseCount() {
@@ -53,13 +59,13 @@ class App extends Component {
   decreaseCount(){
     if (this.state.count > 0) {
     this.setState({count: this.state.count - 1})
-    this.bench()
+    this.bench
     }
   }
 
   resetCount() {
     this.setState({count: 0})
-    this.bench()
+    this.bench
   }
 
   //======================
@@ -73,11 +79,13 @@ class App extends Component {
     var tempFight = this.state.fightersWaiting.concat(this.state.fightersBench);
 
     tempFight.forEach(val => {
-      if (val.action > this.state.count +1) {
+      if (val.action > this.state.count+1) {
         newWait.push(val)
       } else {newBench.push(val)}
     }) 
     this.setState({fightersBench: newBench, fightersWaiting: newWait})
+    
+    setTimeout(_=> this.sortFigh(), 250)
   }
 
   killWait(t) {
@@ -106,9 +114,8 @@ resurrect(t) {
   this.state.Graveyard.forEach((val,i,arr) =>{
     if (val.name === t) {
       val.action = this.state.count;
-      var hold = this.state.fightersBench.push(val);
+      this.state.fightersBench.push(val);
       this.state.Graveyard.splice(i,1)
-      this.setState({fightersBench: hold})
     }
   })
   this.bench()
@@ -116,18 +123,68 @@ resurrect(t) {
 
 //===========ACTION MANAGEMENT============
 
-moreSpeedWaiting(f,s) {
-  var tempAct = f.action
-  this.setState.fightersWaiting({action: tempAct + s})
-  console.log(f)
+moreSpeedWaiting(f) {
+    this.state.fightersWaiting.forEach((val,i,arr) => {
+      if (val.name === f.name) {
+        val.action = val.action + val.speed;
+       }
+    })
+    this.bench();
 }
 
-catchUpCount() {
-
+moreSpeedBench(f) {
+  this.state.fightersBench.forEach((val,i,arr) => {
+    if (val.name === f.name) {
+      val.action = val.action + val.speed;
+     }
+  })
+  this.bench();
 }
+
+catchUpCount(f) {
+  this.state.fightersBench.forEach((val,i,arr) => {
+    if (val.name === f.name) {
+      val.action = this.state.count;
+     }
+  })
+  this.bench();
+}
+
+//==========ToP=================
+
+// topBench(f) {
+//   this.setState({open: true})
+
+//   this.state.fightersBench.forEach((val,i,arr) => {
+//     if (val.name === f.name) {
+//       val.action = this.state.count;
+//      }
+//   })
+//   this.bench();
+// }
+
+topWaiting(f) {
+  this.setState({open: true})
+
+  this.state.fightersWaiting.forEach((val,i,arr) => {
+    if (val.name === f.name) {
+      val.action = this.state.count + (this.state.top * 5);
+     }
+  })
+  this.bench();
+}
+
+onCloseModal = _=> {
+  this.setState({open: false})
+}
+
+
 
 //==================================================================================
   render() {
+
+    const { open } = this.state;
+    
     return (
       <div className="App">
         <header>
@@ -139,16 +196,26 @@ catchUpCount() {
             resetCount={this.resetCount}/>
         <BenchTable  
             people={this.state.fightersBench}
-            kill={this.killBench}/>
+            kill={this.killBench}
+            speed={this.moreSpeedBench}
+            catchUp={this.catchUpCount}/>
         <WaitingTable 
             people={this.state.fightersWaiting}
             kill={this.killWait}
-            speed={this.moreSpeedWaiting}/>
+            speed={this.moreSpeedWaiting}
+            top={this.topWaiting}/>
         <Graveyard 
             people={this.state.Graveyard}
             resurrect={this.resurrect}/>
 
             <button onClick={this.sortFigh}>TEST</button>
+
+            
+      <Modal open={open} onClose={this.onCloseModal} little>
+        <p>Enter How Much Combatant Failed By</p>
+        <input />
+      </Modal>
+      
       </div>
     );
   }
