@@ -21,14 +21,12 @@ p {
   background: lightcoral;
   margin: 5vh auto;
   width: 650px;
-  border: 1px solid black;
 }
 
 .BenchTable {
   background: lightgoldenrodyellow;
   margin: 5vh auto;
   width: 650px;
-  border: 1px solid black;
   padding-left: 3vw;
 }
 
@@ -36,13 +34,11 @@ p {
   background: grey;
   margin: 5vh auto;
   width: 650px;
-  border: 1px solid black;
 }
 
 .Waiting {
   margin: 5vh auto;
   width: 650px;
-  border: 1px solid black;
   background: lightblue;
   padding-left: 3vw;
 }

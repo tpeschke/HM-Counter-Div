@@ -35,7 +35,7 @@ class App extends Component {
     this.moreSpeedWaiting = this.moreSpeedWaiting.bind(this)
     this.moreSpeedBench = this.moreSpeedBench.bind(this)
     this.catchUpCount = this.catchUpCount.bind(this)
-    this.topBench = this.topBench.bind(this)
+    // this.topBench = this.topBench.bind(this)
     this.topWaiting = this.topWaiting.bind(this)
   }
 
@@ -59,13 +59,13 @@ class App extends Component {
   decreaseCount(){
     if (this.state.count > 0) {
     this.setState({count: this.state.count - 1})
-    this.bench
+    this.bench()
     }
   }
 
   resetCount() {
     this.setState({count: 0})
-    this.bench
+    this.bench()
   }
 
   //======================
@@ -152,6 +152,10 @@ catchUpCount(f) {
 
 //==========ToP=================
 
+topFailBy (e) {
+  this.setState({top: e})
+}
+
 // topBench(f) {
 //   this.setState({open: true})
 
@@ -213,7 +217,8 @@ onCloseModal = _=> {
             
       <Modal open={open} onClose={this.onCloseModal} little>
         <p>Enter How Much Combatant Failed By</p>
-        <input />
+        <input onChange={e => this.topFailBy(e.target.value)}/>
+        <button onClick={this.onCloseModal}>:(</button>
       </Modal>
       
       </div>
